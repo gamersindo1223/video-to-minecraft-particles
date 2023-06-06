@@ -1,8 +1,6 @@
-2.py
-tets.js
-test.py
-frame-to-particle.py
 frames
-result
+test.py
 video.mp4
-frames-to-particles.py
+gui.py
+result
+.vscode
