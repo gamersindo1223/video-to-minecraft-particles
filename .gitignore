@@ -1,6 +1,5 @@
+### Todo: Delete development files
 frames
-test.py
-video.mp4
-gui.py
-result
+__pycache__
 .vscode
+test

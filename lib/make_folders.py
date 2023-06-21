@@ -24,7 +24,7 @@ def make_datapack():
         file.write("""{\n\t"values": ["img:tick"]\n}""")
     file_contents = {
         'load.mcfunction': 'tellraw @a {"text":"Particles have been loaded [Video-To-Minecraft-Particles]","color":"yellow","clickEvent":{"action":"run_command","value":"/function img:start"},"hoverEvent":{"action":"show_text","contents":["Click me to start the command! [The command will start near world spawn]"]}}',
-        'tick.mcfunction': 'Content for file 2',
+        'tick.mcfunction': '',
         'start.mcfunction': 'function img:src/1'
     }
 

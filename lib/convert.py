@@ -1,18 +1,13 @@
 # Converts images into Minecraft particles mcfunction file.
 # To use this, you would need python 3 and PIL.
 # This tool is created by Red Cocoon. Please do not remove this line, please :'(
-# Red Cocoon is the original author I jsut modified this
-import cv2
+# Red Cocoon is the original author I jut modified this
 import os
 from PIL import Image
-import os 
 from moviepy.editor import *
-from make_folders import make_audiopacks
 from time import sleep
 import shutil
-
-
-def convert(array_images, total_frames):
+def convert(array_images, total_frames, function_name):
     index_ylyl = 0
     output_path = os.getcwd() + "/../result"
     #if os.path.exists(output_path):
@@ -57,4 +52,11 @@ def convert(array_images, total_frames):
                 for line in particles:
                     file.write(line+"\n")
     print("Finished!")
-                        
+def convert_audio(filename, function_name):
+    video_path = "../video.mp4"
+    video_clip = VideoFileClip(video_path)
+    has_audio = video_clip.audio is not None
+    if has_audio:
+        video_clip.audio.write_audiofile(f"{os.getcwd()}/audio-packs/assets/audio-particles/sounds/custom_particles_bgm_music.ogg", after=lambda: shutil.make_archive("audio_particles_resouce_pack", 'zip', f'../result/audio-packs'))
+    else:
+        pass
