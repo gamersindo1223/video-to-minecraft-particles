@@ -1,3 +1,5 @@
 Pillow
 opencv-python
 librosa
+termcolor
+inquirer 

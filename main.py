@@ -14,7 +14,7 @@ root.destroy()
 if(filelocation == ""):
     raise Exception("No video file")
 print(filelocation)
-questions = [inquirer.Text('function-name', message="What is the function name?",validate=lambda _, x: re.match('[A-Za-z]', x), default="particles")]
+questions = [inquirer.Text('function-name', message="What is the function name?",validate=lambda _, x: re.match('[A-Za-z]', x), default="particles"), inquirer.Text('particles-density', message="Please Write the particles density",validate=lambda _, x: re.match('^[0-9]*$', x), default=5)]
 inqanswers = inquirer.prompt(questions)
 # convert frames
 frames = []
@@ -31,5 +31,10 @@ for frame_number in range(total_frames):
         frames.append(str(frame))
     except Exception as e:
         raise Exception("An error occurred:", str(e))
+if(len(frames)>= 2000):
+    print(f"{colored('[WARNING]!', 'yellow', attrs=['bold'])} With the current configuration, you will need to make a paper server!\nsee Issue https://github.com/gamersindo1223/video-to-minecraft-particles/blob/main/README.md.md#Minecraft%20lagging%20when%20using%20datapacks")
+    warning = inquirer.prompt(inquirer.Confirm("warning-particles-over-2000", message=f"continue?"))
+    if(warning["warning-particles-over-2000"] == False): raise ValueError("User didn't want to continue") 
 print("Finished Extracting frames, Now converting into a MC Function")
-main(frames, int(video.get(cv2.CAP_PROP_FRAME_COUNT)), inqanswers)
+main(frames, total_frames, inqanswers, filelocation)
+#main(inqanswers, inqanswers, inqanswers)

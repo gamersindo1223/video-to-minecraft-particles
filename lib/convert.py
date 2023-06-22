@@ -5,24 +5,23 @@
 import os
 from PIL import Image
 from moviepy.editor import *
-from time import sleep
 import shutil
-def convert(array_images, total_frames, function_name):
+from lib.make_folders import make_resourcepack
+def convert(array_images, total_frames, function_name, particles_density, datapack_location):
+    """
+    array_images = array of frames
+    total frames = like the name
+    function_name = function name
+    """
     index_ylyl = 0
-    output_path = os.getcwd() + "/../result"
-    #if os.path.exists(output_path):
-    #    shutil.rmtree(output_path)
-    #os.mkdir(output_path)
-        #frame_folder = sorted(next(os.walk(f"{os.getcwd()}//frames"), (None, None, []))[2], key=lambda x: int(x.split('.')[0]))
+    #output_path = f"{os.getcwd()}/particles-datapack/data/{function_name}/functions/src"
     print("Starting to convert frames")
     for current_image in array_images:
         index_ylyl = index_ylyl + 1
-        command = "particle minecraft:dust {0} {1} {2} {3} ~{4} ~ ~{5} 0 0 0 0.001 1"
+        command = "execute as @a[tag=player,limit=1] run particle minecraft:dust {0} {1} {2} {3} ~{4} ~ ~{5} 0 0 0 0.001 1"
         # This will produce 4096 particles in one frame, 64*64 = 4096 particles x*y
         particle_resolution = (64,64)
-
-        particle_density = int(8)
-        #image = Image.open(os.getcwd() + f"/frames/{current_image}")
+        particle_density = int(particles_density)
         image = Image.fromarray(current_image)
         image.thumbnail(particle_resolution)
         img_x, img_y = image.size
@@ -40,23 +39,27 @@ def convert(array_images, total_frames, function_name):
                     relative_y = float((img_y/2)-j)/particle_density
                     new_command = command.format(color[0],color[1],color[2],color[3],relative_x,relative_y)
                     particles.append(new_command)
-            with open(output_path + f"/{index_ylyl}.mcfunction", "w") as file:
+            #with open(output_path + f"/{index_ylyl}.mcfunction", "w") as file:
+            with open(f"{datapack_location}/data/{function_name}/functions/src{index_ylyl}.mcfunction", "w") as file:
                 if index_ylyl+1 < len(array_images):
-                    particles.append(f"schedule function img:src/{index_ylyl+1} {1/total_frames}s")
+                    particles.append(f"schedule function {function_name}:src/{index_ylyl+1} {1/total_frames}s")
                     if index_ylyl == 1:
                         particles.insert(0, "tag @s add player")
-                elif index_ylyl+1 == len(array_images):
+                elif index_ylyl == len(array_images):
                     particles.append("tag @a remove player")
                 else:
                     pass
                 for line in particles:
                     file.write(line+"\n")
+    shutil.make_archive(datapack_location, 'zip', f'${os.getcwd()}/result/particles_datapack')
     print("Finished!")
-def convert_audio(filename, function_name):
-    video_path = "../video.mp4"
-    video_clip = VideoFileClip(video_path)
+
+def convert_audio(file_location, function_name, resourcepack_path):
+    video_clip = VideoFileClip(file_location)
     has_audio = video_clip.audio is not None
     if has_audio:
-        video_clip.audio.write_audiofile(f"{os.getcwd()}/audio-packs/assets/audio-particles/sounds/custom_particles_bgm_music.ogg", after=lambda: shutil.make_archive("audio_particles_resouce_pack", 'zip', f'../result/audio-packs'))
+        make_resourcepack(function_name, resourcepack_path)
+        video_clip.audio.write_audiofile(f"{resourcepack_path}/assets/minecraft/sounds/{function_name}_audio.ogg", 
+        after=lambda: shutil.make_archive(resourcepack_path, 'zip', f'${os.getcwd()}/result/${function_name}_audio'))
     else:
         pass
