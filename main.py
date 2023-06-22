@@ -32,7 +32,7 @@ for frame_number in range(total_frames):
     except Exception as e:
         raise Exception("An error occurred:", str(e))
 if(len(frames)>= 2000):
-    print(f"{colored('[WARNING]!', 'yellow', attrs=['bold'])} With the current configuration, you will need to make a paper server!\nsee Issue https://github.com/gamersindo1223/video-to-minecraft-particles/blob/main/README.md.md#Minecraft%20lagging%20when%20using%20datapacks")
+    print(f"{colored('[WARNING]!', 'yellow', attrs=['bold'])} With the current configuration, you will need to make a paper server!\nsee https://github.com/gamersindo1223/video-to-minecraft-particles#minecraft-lagging-when-using-datapacks")
     warning = inquirer.prompt(inquirer.Confirm("warning-particles-over-2000", message=f"continue?"))
     if(warning["warning-particles-over-2000"] == False): raise ValueError("User didn't want to continue") 
 print("Finished Extracting frames, Now converting into a MC Function")
