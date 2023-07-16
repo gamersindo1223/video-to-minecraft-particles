@@ -2,7 +2,8 @@
 ### ⚠️warning, this code isn't optimized. Open a pull request if you want to contribute, or an issue if you encounter bugs.
 How to use? run
 ```shell
-pip install -r requirements.txt```
+pip install -r requirements.txt
+```
 and then run
 ```python
 python main.py
